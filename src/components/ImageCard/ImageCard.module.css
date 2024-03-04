@@ -1,0 +1,18 @@
+.imageList {
+  display: flex;
+  justify-content: center;
+}
+
+.imageContainer {
+  text-align: center;
+}
+
+.image {
+  max-width: 100%;
+  height: auto;
+}
+
+.imageInfo {
+  margin-top: 10px;
+  text-align: center;
+}
