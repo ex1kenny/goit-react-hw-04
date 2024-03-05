@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
 import "./App.css";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
@@ -8,6 +7,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { Toaster } from "react-hot-toast";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import { fetchImages } from "../../image-api";
+import ImageModal from "../ImageModal/ImageModal";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -18,10 +18,22 @@ function App() {
     loading: false,
     error: false,
   });
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    description: "",
+    img: "",
+  });
+  const openModal = (description, img) => {
+    console.log(img);
+    setModalData({ isOpen: true, description, img });
+  };
+
+  const closeModal = () => {
+    setModalData({ ...modalData, isOpen: false });
+  };
 
   const handleSubmit = async (newQuery) => {
-    const uniqueId = nanoid();
-    setQuery(`${uniqueId}/${newQuery}`);
+    setQuery(newQuery);
     setPage(1);
     setImages({
       items: [],
@@ -50,11 +62,6 @@ function App() {
           ...prevElements,
           items: [...prevElements.items, ...response.results],
         }));
-        setImages((prevData) => ({
-          ...prevData,
-          loading: false,
-          error: false,
-        }));
         setTotalPages(response.total_pages);
       } catch (error) {
         setImages((prevElements) => ({
@@ -76,12 +83,20 @@ function App() {
     <div>
       <SearchBar onSubmit={handleSubmit} />
       {images.error && <ErrorMessage />}
-      {images.items.length > 0 && <ImageGallery items={images.items} />}
+      {images.items.length > 0 && (
+        <ImageGallery items={images.items} openModal={openModal} />
+      )}
       {images.loading && <Loader />}
       {images.items.length > 0 && !images.loading && page < totalPages && (
         <LoadMoreBtn onPagination={handlePagination} />
       )}
       <Toaster position="top-right" />
+      <ImageModal
+        isOpen={modalData.isOpen}
+        description={modalData.description}
+        img={modalData.img}
+        handleModal={closeModal}
+      />
     </div>
   );
 }
