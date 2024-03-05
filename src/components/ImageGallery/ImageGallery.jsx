@@ -6,7 +6,12 @@ export default function ImageGallery({ items, openModal }) {
     <ul className={css.container}>
       {items.map((item) => (
         <li key={item.id}>
-          {item.id && <ImageCard data={item} openModal={openModal} />}
+          {item.id && (
+            <ImageCard
+              data={item}
+              openModal={(description, img) => openModal(description, img)}
+            />
+          )}
         </li>
       ))}
     </ul>

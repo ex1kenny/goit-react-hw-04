@@ -10,7 +10,7 @@ export default function ImageCard({
   openModal,
 }) {
   const handleClick = () => {
-    openModal({ description: alt_description, img: regular });
+    openModal(description, regular);
   };
 
   return (

@@ -27,7 +27,6 @@ function App() {
     console.log(img);
     setModalData({ isOpen: true, description, img });
   };
-
   const closeModal = () => {
     setModalData({ ...modalData, isOpen: false });
   };
