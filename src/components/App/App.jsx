@@ -46,7 +46,7 @@ function App() {
       ...prevElements,
       loading: true,
     }));
-    setPage(page + 1);
+    setPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
